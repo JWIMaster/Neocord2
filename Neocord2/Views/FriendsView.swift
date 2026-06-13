@@ -12,18 +12,13 @@ import SwiftcordLegacy
 
 class FriendsView: UIView {
     private var backgroundView: UIView = {
-        if ThemeEngine.enableGlass {
-            let glass = LiquidGlassView(blurRadius: 0, cornerRadius: 22, disableBlur: true, filterExclusions: ThemeEngine.glassFilterExclusions)
-            glass.translatesAutoresizingMaskIntoConstraints = false
-            glass.tintColorForGlass = .discordGray.withAlphaComponent(0.5)
-            return glass
-        } else {
-            let bg = UIView()
-            bg.backgroundColor = .discordGray.withIncreasedSaturation(factor: 0.3)
-            bg.layer.cornerRadius = 22
-            bg.translatesAutoresizingMaskIntoConstraints = false
-            return bg
-        }
+        let bg = UIView()
+        bg.backgroundColor = .discordGray
+        bg.layer.cornerRadius = 22
+        bg.layer.borderWidth = 1
+        bg.layer.borderColor = .darkGray
+        bg.translatesAutoresizingMaskIntoConstraints = false
+        return bg
     }()
 
     lazy var friendsCollectionView: UICollectionView = {

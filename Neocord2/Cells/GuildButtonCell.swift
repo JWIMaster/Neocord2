@@ -27,17 +27,10 @@ class SidebarButtonCell: UICollectionViewCell {
     static let reuseID = "SidebarButtonCell"
     
     private var backgroundColorView: UIView = {
-        if ThemeEngine.enableGlass {
-            let glass = LiquidGlassView(blurRadius: 0, cornerRadius: 8, disableBlur: true, filterExclusions: ThemeEngine.glassFilterExclusions)
-            glass.translatesAutoresizingMaskIntoConstraints = false
-            glass.shadowRadius = 0
-            glass.shadowOpacity = 0
-            return glass
-        } else {
-            let bg = UIView()
-            bg.translatesAutoresizingMaskIntoConstraints = false
-            return bg
-        }
+        let bg = UIView()
+        bg.translatesAutoresizingMaskIntoConstraints = false
+        bg.layer.cornerRadius = 8
+        return bg
     }()
     
     private let imageView: UIImageView = {
@@ -108,9 +101,7 @@ class SidebarButtonCell: UICollectionViewCell {
                 
                 DispatchQueue.main.async {
                     self?.imageView.image = folderImage
-                    if let glass = self?.backgroundColorView as? LiquidGlassView {
-                        glass.tintColorForGlass = folder.color?.withAlphaComponent(0.4) ?? .clear
-                    }
+                    self?.backgroundColorView.backgroundColor = folder.color?.withAlphaComponent(0.4) ?? .clear
                 }
             }
 

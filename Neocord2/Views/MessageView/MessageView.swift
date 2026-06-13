@@ -42,16 +42,10 @@ public class MessageView: UIView, UIGestureRecognizerDelegate {
     let timestamp = UILabel()
     let edited = UILabel()
     let messageBackground: UIView = {
-        if ThemeEngine.enableGlass {
-            let glass = LiquidGlassView(blurRadius: 0, cornerRadius: 22, disableBlur: true, filterExclusions: ThemeEngine.glassFilterExclusions)
-            glass.translatesAutoresizingMaskIntoConstraints = false
-            return glass
-        } else {
-            let background = UIView()
-            background.translatesAutoresizingMaskIntoConstraints = false
-            background.layer.cornerRadius = 22
-            return background
-        }
+        let background = UIView()
+        background.translatesAutoresizingMaskIntoConstraints = false
+        background.layer.cornerRadius = 22
+        return background
     }()
     var slClient: SLClient?
     var message: Message?
@@ -226,14 +220,6 @@ public class MessageView: UIView, UIGestureRecognizerDelegate {
                 self.applyMember()
             }
         }
-        
-        /*slClient?.gateway?.addGuildMemberChunkObserver { [weak self] members in
-            guard let self = self else { return }
-            if let member = members[messageAuthorID] {
-                self.member = member
-                self.applyMember()
-            }
-        }*/
     }
     
     func applyMember() {
@@ -256,15 +242,7 @@ public class MessageView: UIView, UIGestureRecognizerDelegate {
     func setupBackground() {
         messageBackground.translatesAutoresizingMaskIntoConstraints = false
         messageBackground.isUserInteractionEnabled = false
-        
-        if let messageBackground = messageBackground as? LiquidGlassView {
-            messageBackground.shadowOpacity = 0.3
-            messageBackground.shadowRadius = 6
-            messageBackground.solidViewColour = .discordGray
-        } else {
-            messageBackground.backgroundColor = .discordGray
-        }
-        
+        messageBackground.backgroundColor = .discordGray
         messageBackground.sizeToFit()
     }
     
@@ -295,18 +273,14 @@ public class MessageView: UIView, UIGestureRecognizerDelegate {
         timestamp.setContentCompressionResistancePriority(.required, for: .horizontal)
 
         
-        NSLayoutConstraint.activate([
+        /*NSLayoutConstraint.activate([
             messageBackground.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             messageBackground.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            
-            
             
             messageContent.topAnchor.constraint(equalTo: messageBackground.topAnchor, constant: 20),
             messageContent.leadingAnchor.constraint(equalTo: messageBackground.leadingAnchor, constant: 20),
             messageContent.trailingAnchor.constraint(equalTo: messageBackground.trailingAnchor, constant: -20),
             messageContent.bottomAnchor.constraint(equalTo: messageBackground.bottomAnchor, constant: -6),
-            
-            
             
             authorName.topAnchor.constraint(equalTo: messageBackground.topAnchor, constant: 4),
             authorName.leadingAnchor.constraint(equalTo: messageContent.leadingAnchor),
@@ -320,6 +294,32 @@ public class MessageView: UIView, UIGestureRecognizerDelegate {
             
             authorAvatar.topAnchor.constraint(equalTo: authorName.topAnchor),
             authorAvatar.trailingAnchor.constraint(equalTo: messageContent.leadingAnchor, constant: -4)
+        ])*/
+        
+        NSLayoutConstraint.activate([
+            messageBackground.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            messageBackground.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            
+            authorAvatar.widthAnchor.constraint(equalToConstant: 30),
+            authorAvatar.heightAnchor.constraint(equalToConstant: 30),
+            
+            authorAvatar.topAnchor.constraint(equalTo: messageBackground.topAnchor, constant: 4),
+            authorAvatar.leadingAnchor.constraint(equalTo: messageBackground.leadingAnchor),
+            
+            authorName.topAnchor.constraint(equalTo: messageBackground.topAnchor, constant: 4),
+            authorName.leadingAnchor.constraint(equalTo: authorAvatar.trailingAnchor, constant: 8),
+            
+            messageContent.topAnchor.constraint(equalTo: authorName.bottomAnchor, constant: 2),
+            messageContent.leadingAnchor.constraint(equalTo: authorName.leadingAnchor),
+            messageContent.trailingAnchor.constraint(equalTo: messageBackground.trailingAnchor, constant: -20),
+            messageContent.bottomAnchor.constraint(equalTo: messageBackground.bottomAnchor, constant: -6),
+            
+            edited.centerYAnchor.constraint(equalTo: authorName.centerYAnchor),
+            edited.leadingAnchor.constraint(equalTo: authorName.trailingAnchor, constant: 4),
+
+            timestamp.centerYAnchor.constraint(equalTo: authorName.centerYAnchor),
+            timestamp.leadingAnchor.constraint(equalTo: edited.trailingAnchor, constant: 4),
+            timestamp.trailingAnchor.constraint(equalTo: messageContent.trailingAnchor),
         ])
         
         if hasReactions {

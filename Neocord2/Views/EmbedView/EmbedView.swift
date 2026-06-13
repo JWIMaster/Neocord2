@@ -16,21 +16,10 @@ class EmbedView: UIView {
     var embed: Embed
     
     private let backgroundView: UIView = {
-        if ThemeEngine.enableGlass {
-            let glass = LiquidGlassView(
-                blurRadius: 0,
-                cornerRadius: 22,
-                disableBlur: true,
-                filterExclusions: ThemeEngine.glassFilterExclusions
-            )
-            glass.translatesAutoresizingMaskIntoConstraints = false
-            return glass
-        } else {
-            let view = UIView()
-            view.translatesAutoresizingMaskIntoConstraints = false
-            view.layer.cornerRadius = 22
-            return view
-        }
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.layer.cornerRadius = 22
+        return view
     }()
     
     private let stack = UIStackView()

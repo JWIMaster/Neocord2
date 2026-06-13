@@ -32,18 +32,10 @@ class ProfileView: UIView {
     var username = UILabel()
     var profilePicture = UIImageView()
     var profileBanner = UIImageView()
-    let exclusions = ThemeEngine.glassFilterExclusions + [.highlight]
     lazy var bioBackground: UIView? = {
-        if ThemeEngine.enableGlass {
-            let glass = LiquidGlassView(blurRadius: 0, cornerRadius: 22, disableBlur: true, filterExclusions: exclusions)
-            glass.translatesAutoresizingMaskIntoConstraints = false
-            glass.shadowRadius = 6
-            return glass
-        } else {
-            let bioBg = UIView()
-            bioBg.translatesAutoresizingMaskIntoConstraints = false
-            return bioBg
-        }
+        let bioBg = UIView()
+        bioBg.translatesAutoresizingMaskIntoConstraints = false
+        return bioBg
     }()
     
     var bioWithEmoji = DiscordMarkdownView()
@@ -52,22 +44,9 @@ class ProfileView: UIView {
     var scrollView = UIScrollView()
     
     lazy var backgroundView: UIView? = {
-        if ThemeEngine.enableGlass {
-            let bg = LiquidGlassView(
-                blurRadius: 6,
-                cornerRadius: 0,
-                disableBlur: true,
-                filterExclusions: exclusions
-            )
-            bg.translatesAutoresizingMaskIntoConstraints = false
-            bg.shadowRadius = 0
-            bg.shadowOpacity = 0
-            return bg
-        } else {
-            let bg = UIView()
-            bg.translatesAutoresizingMaskIntoConstraints = false
-            return bg
-        }
+        let bg = UIView()
+        bg.translatesAutoresizingMaskIntoConstraints = false
+        return bg
     }()
     
     var roleCollectionView: RoleCollectionView = {
@@ -77,32 +56,17 @@ class ProfileView: UIView {
         return roleCV
     }()
     lazy var roleCollectionViewBackground: UIView? = {
-        if ThemeEngine.enableGlass {
-            let glass = LiquidGlassView(blurRadius: 0, cornerRadius: 22, disableBlur: true, filterExclusions: exclusions)
-            glass.translatesAutoresizingMaskIntoConstraints = false
-            glass.shadowRadius = 6
-            return glass
-        } else {
-            let roleBg = UIView()
-            roleBg.translatesAutoresizingMaskIntoConstraints = false
-            return roleBg
-        }
+        let roleBg = UIView()
+        roleBg.translatesAutoresizingMaskIntoConstraints = false
+        return roleBg
     }()
     
     private lazy var presenceIndicator: UIView = {
-        if ThemeEngine.enableGlass {
-            let glass = LiquidGlassView(blurRadius: 0, cornerRadius: 10, disableBlur: true, filterExclusions: ThemeEngine.glassFilterExclusions)
-            glass.translatesAutoresizingMaskIntoConstraints = false
-            glass.shadowColor = presenceColor.withAlphaComponent(1).cgColor
-            glass.shadowRadius = 6
-            glass.tintColorForGlass = presenceColor
-            return glass
-        } else {
-            let view = UIView()
-            view.translatesAutoresizingMaskIntoConstraints = false
-            view.backgroundColor = presenceColor
-            return view
-        }
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = presenceColor
+        view.layer.cornerRadius = 10
+        return view
     }()
 
     private var presenceColor: UIColor {
@@ -172,12 +136,7 @@ class ProfileView: UIView {
     }
     
     private func updatePresenceIndicatorColor() {
-        if let glass = presenceIndicator as? LiquidGlassView {
-            glass.tintColorForGlass = presenceColor
-            glass.shadowColor = presenceColor.cgColor
-        } else {
-            presenceIndicator.backgroundColor = presenceColor
-        }
+        presenceIndicator.backgroundColor = presenceColor
     }
     
     func setupConstraints() {
@@ -303,13 +262,8 @@ class ProfileView: UIView {
                 self.profilePicture.layer.shadowPath = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: 80, height: 80), cornerRadius: 40).cgPath
                 
                 self.defaultColour = color
-                if self.backgroundView is LiquidGlassView, let bioBackground = self.bioBackground as? LiquidGlassView {
-                    bioBackground.tintColorForGlass = color.withIncreasedSaturation(factor: 1.4).withAlphaComponent(0.4)
-                    bioBackground.setNeedsLayout()
-                } else {
-                    self.backgroundView?.backgroundColor = color.withIncreasedSaturation(factor: 1.4)
-                    self.backgroundView?.setNeedsLayout()
-                }
+                self.backgroundView?.backgroundColor = color.withIncreasedSaturation(factor: 1.4)
+                self.backgroundView?.setNeedsLayout()
             }
         }
     }
@@ -340,13 +294,13 @@ class ProfileView: UIView {
             bg.tintGradientColors = colors
             bg.tintColorForGlass = .clear
             bg.setNeedsLayout()
-            let bioColors = userProfile.themeColors.map { $0.withAlphaComponent(0.4).withIncreasedSaturation(factor: 0.7) }
+            let bioColors = userProfile.themeColors.map { $0.withIncreasedSaturation(factor: 0.7) }
             bioBg.tintGradientColors = shiftedGradientColorsIfTwoDistinct(bioColors)
             bioBg.tintColorForGlass = .clear
             bioBg.setNeedsLayout()
             
             if let roleCollectionViewBackground = roleCollectionViewBackground as? LiquidGlassView {
-                let roleBgColors = userProfile.themeColors.map { $0.withAlphaComponent(0.4).withIncreasedSaturation(factor: 0.7) }
+                let roleBgColors = userProfile.themeColors.map { $0.withIncreasedSaturation(factor: 0.7) }
                 roleCollectionViewBackground.tintGradientColors = shiftedGradientColorsIfTwoDistinct(roleBgColors)
                 roleCollectionViewBackground.tintColorForGlass = .clear
                 roleCollectionViewBackground.setNeedsLayout()
@@ -363,12 +317,12 @@ class ProfileView: UIView {
                     
                     if let roleCollectionViewBackground = self.roleCollectionViewBackground as? LiquidGlassView {
                         roleCollectionViewBackground.tintGradientColors = nil
-                        roleCollectionViewBackground.tintColorForGlass = color.withIncreasedSaturation(factor: 1.4).withAlphaComponent(0.4)
+                        roleCollectionViewBackground.tintColorForGlass = color.withIncreasedSaturation(factor: 1.4)
                         roleCollectionViewBackground.setNeedsLayout()
                     }
 
                     bioBg.tintGradientColors = nil
-                    bioBg.tintColorForGlass = color.withIncreasedSaturation(factor: 1.4).withAlphaComponent(0.4)
+                    bioBg.tintColorForGlass = color.withIncreasedSaturation(factor: 1.4)
                     bioBg.setNeedsLayout()
                 }
             }

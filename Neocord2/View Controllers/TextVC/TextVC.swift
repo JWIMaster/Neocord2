@@ -202,7 +202,7 @@ class TextViewController: UIViewController, UIGestureRecognizerDelegate, UIScrol
     }
     
     func setupConstraints() {
-        messageStack.pinToEdges(of: scrollView, insetBy: .init(top: 20, left: 20, bottom: 20, right: 20))
+        messageStack.pinToEdges(of: scrollView, insetBy: .init(top: 20, left: 10, bottom: 20, right: 10))
         messageStack.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         scrollView.pinToEdges(of: containerView)
         scrollView.pinToCenter(of: containerView)

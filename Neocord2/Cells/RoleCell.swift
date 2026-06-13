@@ -20,19 +20,10 @@ class RoleCell: UICollectionViewCell {
     }()
     
     var roleBackground: UIView = {
-        if ThemeEngine.enableGlass {
-            let glass = LiquidGlassView(blurRadius: 0, cornerRadius: 8, disableBlur: true, filterExclusions: ThemeEngine.glassFilterExclusions)
-            //glass.shadowRadius = 6
-            //glass.shadowOpacity = 0.3
-            glass.translatesAutoresizingMaskIntoConstraints = false
-            glass.clipsToBounds = false
-            return glass
-        } else {
-            let bg = UIView()
-            bg.layer.cornerRadius = 8
-            bg.translatesAutoresizingMaskIntoConstraints = false
-            return bg
-        }
+        let bg = UIView()
+        bg.layer.cornerRadius = 8
+        bg.translatesAutoresizingMaskIntoConstraints = false
+        return bg
     }()
     
     var roleIcon: UIImage? {
@@ -52,23 +43,12 @@ class RoleCell: UICollectionViewCell {
                         let resized = image.resizeImage(image, targetSize: CGSize(width: 16, height: 16))
                         DispatchQueue.main.async {
                             self.roleIcon = resized
-                            if ThemeEngine.enableGlass {
-                                guard let roleBackground = self.roleBackground as? LiquidGlassView else { return }
-                                roleBackground.tintColorForGlass = self.bgColor.withAlphaComponent(0.3)
-                                //roleBackground.shadowColor = self.bgColor.cgColor
-                            } else {
-                                self.roleButton.backgroundColor = UIColor(cgColor: self.bgColor.cgColor.copy(alpha: 0.3)!)
-                            }
+                            self.roleButton.backgroundColor = UIColor(cgColor: self.bgColor.cgColor.copy(alpha: 0.3)!)
                         }
                     }
                 }
             } else {
-                if let roleBackground = self.roleBackground as? LiquidGlassView, ThemeEngine.enableGlass {
-                    roleBackground.tintColorForGlass = bgColor.withAlphaComponent(0.3)
-                    //roleBackground.shadowColor = bgColor.cgColor
-                } else {
-                    self.roleButton.backgroundColor = UIColor(cgColor: bgColor.cgColor.copy(alpha: 0.3)!)
-                }
+                self.roleButton.backgroundColor = UIColor(cgColor: bgColor.cgColor.copy(alpha: 0.3)!)
             }
         }
     }

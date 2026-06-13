@@ -26,18 +26,10 @@ class FriendCell: UICollectionViewCell, UIGestureRecognizerDelegate {
     }()
     
     private var backgroundGlass: UIView? = {
-        if ThemeEngine.enableGlass {
-            let lg = LiquidGlassView(blurRadius: 0, cornerRadius: 22, disableBlur: true, filterExclusions: ThemeEngine.glassFilterExclusions)
-            lg.shadowOpacity = 0
-            lg.shadowRadius = 0
-            lg.solidViewColour = .clear
-            lg.translatesAutoresizingMaskIntoConstraints = false
-            return lg
-        } else {
-            let bg = UIView()
-            bg.layer.cornerRadius = 22
-            return bg
-        }
+        let bg = UIView()
+        bg.layer.cornerRadius = 22
+        bg.translatesAutoresizingMaskIntoConstraints = false
+        return bg
     }()
     
     private var stack: UIStackView = {
@@ -54,17 +46,11 @@ class FriendCell: UICollectionViewCell, UIGestureRecognizerDelegate {
     var presenceUpdateObserver: NSObjectProtocol?
     
     private lazy var presenceIndicator: UIView = {
-        if ThemeEngine.enableGlass {
-            let glass = LiquidGlassView(blurRadius: 0, cornerRadius: 6, disableBlur: true, filterExclusions: ThemeEngine.glassFilterExclusions)
-            glass.translatesAutoresizingMaskIntoConstraints = false
-            glass.tintColorForGlass = presenceColor
-            return glass
-        } else {
-            let view = UIView()
-            view.translatesAutoresizingMaskIntoConstraints = false
-            view.backgroundColor = presenceColor
-            return view
-        }
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = presenceColor
+        view.layer.cornerRadius = 6
+        return view
     }()
 
     private var presenceColor: UIColor = .offlineGray
@@ -127,11 +113,7 @@ class FriendCell: UICollectionViewCell, UIGestureRecognizerDelegate {
     }
     
     private func updatePresenceIndicatorColor() {
-        if let glass = presenceIndicator as? LiquidGlassView {
-            glass.tintColorForGlass = presenceColor
-        } else {
-            presenceIndicator.backgroundColor = presenceColor
-        }
+        presenceIndicator.backgroundColor = presenceColor
     }
     
     func configure(with user: User) {
@@ -141,16 +123,6 @@ class FriendCell: UICollectionViewCell, UIGestureRecognizerDelegate {
         let presence = activeClient.presences[user.id!] ?? .offline
         presenceColor = PresenceColor.color(for: presence)
         updatePresenceIndicatorColor()
-        
-        /*clientUser.gateway?.addPresenceUpdateObserver { [weak self] presenceDict in
-            guard let self = self, let updatedPresence = presenceDict[user.id!] else { return }
-            self.presenceColor = PresenceColor.color(for: updatedPresence)
-            DispatchQueue.main.async {
-                if self.friend?.id == user.id {
-                    self.updatePresenceIndicatorColor()
-                }
-            }
-        }*/
         
         presenceUpdateObserver = NotificationCenter.default.addObserver(forName: .presenceUpdate, object: nil, queue: .main) { [weak self] notification in
             guard let self = self else { return }
@@ -175,24 +147,12 @@ class FriendCell: UICollectionViewCell, UIGestureRecognizerDelegate {
                     
                     DispatchQueue.main.async {
                         self.friendAvatar.image = resized
-                        if ThemeEngine.enableProfileTinting {
-                            if let backgroundGlass = self.backgroundGlass as? LiquidGlassView {
-                                backgroundGlass.tintColorForGlass = color
-                            } else {
-                                self.backgroundGlass?.backgroundColor = color
-                            }
-                        }
                     }
                 } else {
                     let defaultPFP = UIImage(named: "defaultavatar")!
                     let resized = defaultPFP.resizeImage(defaultPFP, targetSize: .init(width: 40, height: 40))
                     DispatchQueue.main.async {
                         self.friendAvatar.image = resized
-                        if let backgroundGlass = self.backgroundGlass as? LiquidGlassView {
-                            backgroundGlass.tintColorForGlass = .blue
-                        } else {
-                            self.backgroundGlass?.backgroundColor = .blue
-                        }
                     }
                 }
             }
@@ -217,103 +177,5 @@ class FriendCell: UICollectionViewCell, UIGestureRecognizerDelegate {
                 textVC.presentProfileView(for: friend)
             }
         }
-    }
-}
-
-import UIKit
-
-public final class FeltView: UIView {
-
-    public var feltColor: UIColor = UIColor(red: 0.88, green: 0.16, blue: 0.16, alpha: 1) {
-        didSet { updateColors() }
-    }
-
-    public var cornerRadius: CGFloat = 14 {
-        didSet { layer.cornerRadius = cornerRadius }
-    }
-
-    private let baseLayer = CAGradientLayer()
-    private let fibreLayer = CAReplicatorLayer()
-    private let fibrePrototype = CALayer()
-    private let noiseLayer = CAReplicatorLayer()
-    private let noiseDot = CALayer()
-
-    public override init(frame: CGRect) {
-        super.init(frame: frame)
-        commonInit()
-    }
-
-    public required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        commonInit()
-    }
-
-    private func commonInit() {
-
-        clipsToBounds = true
-        layer.cornerRadius = cornerRadius
-
-        // BASE FELT GRADIENT
-        baseLayer.colors = [
-            feltColor.withAlphaComponent(1).cgColor,
-            feltColor.withAlphaComponent(0.92).cgColor
-        ]
-        baseLayer.startPoint = CGPoint(x: 0, y: 0)
-        baseLayer.endPoint = CGPoint(x: 1, y: 1)
-        layer.addSublayer(baseLayer)
-
-        // FIBRES (soft long strands)
-        fibreLayer.instanceCount = 180
-        fibreLayer.instanceTransform = CATransform3DMakeTranslation(0, 1.2, 0)
-        fibreLayer.instanceAlphaOffset = -0.004
-
-        fibrePrototype.backgroundColor = UIColor.white.withAlphaComponent(0.035).cgColor
-        fibrePrototype.cornerRadius = 1
-        fibreLayer.addSublayer(fibrePrototype)
-        layer.addSublayer(fibreLayer)
-
-        // NOISE SPECKS
-        noiseLayer.instanceCount = 260
-        noiseLayer.instanceTransform = CATransform3DMakeTranslation(1.5, 0, 0)
-        noiseLayer.instanceAlphaOffset = -0.003
-
-        noiseDot.backgroundColor = UIColor.white.withAlphaComponent(0.06).cgColor
-        noiseDot.cornerRadius = 0.6
-        noiseLayer.addSublayer(noiseDot)
-        layer.addSublayer(noiseLayer)
-
-        backgroundColor = .clear
-    }
-
-    public override func layoutSubviews() {
-        super.layoutSubviews()
-
-        baseLayer.frame = bounds
-
-        // fibres: long faint lines
-        fibrePrototype.frame = CGRect(
-            x: 0,
-            y: 0,
-            width: bounds.width,
-            height: 1.2
-        )
-        fibreLayer.frame = bounds
-
-        // noise: tiny dots scattered
-        noiseDot.frame = CGRect(x: 0, y: 0, width: 1.2, height: 1.2)
-        noiseLayer.frame = bounds
-
-        // scatter noise more by randomising base position
-        noiseDot.position = CGPoint(
-            x: CGFloat.random(in: 0...bounds.width),
-            y: CGFloat.random(in: 0...bounds.height)
-        )
-    }
-
-    private func updateColors() {
-        baseLayer.colors = [
-            feltColor.cgColor,
-            feltColor.withAlphaComponent(0.92).cgColor
-        ]
     }
 }

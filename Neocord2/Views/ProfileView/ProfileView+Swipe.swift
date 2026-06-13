@@ -48,10 +48,6 @@ extension ProfileView: UIGestureRecognizerDelegate, UIScrollViewDelegate {
 
                 // Move the view directly
                 self.transform = CGAffineTransform(translationX: 0, y: translationY)
-
-                // Fade background gradually
-                let progress = min(translationY / (self.bounds.height / 2), 1)
-                self.backgroundView?.alpha = 1 - progress * 0.5
             }
 
         case .ended, .cancelled:

@@ -17,16 +17,12 @@ class CustomToolbar: UIView {
     }()
     
     private let backgroundView: UIView = {
-        if ThemeEngine.enableGlass {
-            let glass = LiquidGlassView(blurRadius: 6, cornerRadius: 22, disableBlur: PerformanceManager.disableBlur, filterExclusions: ThemeEngine.glassFilterExclusions)
-            glass.tintColorForGlass = .discordGray.withAlphaComponent(0.5)
-            glass.translatesAutoresizingMaskIntoConstraints = false
-            return glass
-        } else {
-            let bg = UIView()
-            bg.translatesAutoresizingMaskIntoConstraints = false
-            return bg
-        }
+        let bg = UIView()
+        bg.translatesAutoresizingMaskIntoConstraints = false
+        bg.layer.cornerRadius = 22
+        bg.layer.borderWidth = 1
+        bg.layer.borderColor = .darkGray
+        return bg
     }()
 
     // MARK: - Init

@@ -15,23 +15,13 @@ import SwiftcordLegacy
 class LoadingView: UIView {
 
     private let backgroundView: UIView = {
-        if ThemeEngine.enableGlass {
-            let glass = LiquidGlassView(
-                blurRadius: 0,
-                cornerRadius: 22,
-                disableBlur: true,
-                filterExclusions: ThemeEngine.glassFilterExclusions
-            )
-            glass.translatesAutoresizingMaskIntoConstraints = false
-            glass.tintColorForGlass = .discordGray
-            return glass
-        } else {
-            let bg = UIView()
-            bg.translatesAutoresizingMaskIntoConstraints = false
-            bg.backgroundColor = .discordGray.withIncreasedSaturation(factor: 0.3)
-            bg.layer.cornerRadius = 22
-            return bg
-        }
+        let bg = UIView()
+        bg.translatesAutoresizingMaskIntoConstraints = false
+        bg.backgroundColor = .discordGray
+        bg.layer.borderColor = .darkGray
+        bg.layer.borderWidth = 1
+        bg.layer.cornerRadius = 22
+        return bg
     }()
 
     private let spinner: UIActivityIndicatorView = {

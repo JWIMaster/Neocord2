@@ -14,27 +14,19 @@ import OAStackView
 import iOS6BarFix
 import SFSymbolsCompatKit
 
+
 class MessageActionView: UIView {
-    let cancelButton: LiquidGlassView = {
-        MessageActionView.makeActionButton(text: "Cancel", color: nil, image: UIImage(systemName: "xmark.circle.fill", tintColor: .white)!)
-    }()
+    let cancelButton = MessageActionView.makeActionButton(text: "Cancel", color: nil, image: UIImage(systemName: "xmark.circle.fill", tintColor: .white)!)
     
-    let editButton: LiquidGlassView = {
-        MessageActionView.makeActionButton(text: "Edit", color: nil, image: UIImage(systemName: "square.and.pencil", tintColor: .white)!)
-    }()
+    let editButton = MessageActionView.makeActionButton(text: "Edit", color: nil, image: UIImage(systemName: "square.and.pencil", tintColor: .white)!)
     
-    let replyButton: LiquidGlassView = {
-        MessageActionView.makeActionButton(text: "Reply", color: nil, image: UIImage(systemName: "arrowshape.turn.up.right.circle", tintColor: .white)!)
-    }()
+    let replyButton = MessageActionView.makeActionButton(text: "Reply", color: nil, image: UIImage(systemName: "arrowshape.turn.up.right.circle", tintColor: .white)!)
+
     
-    let copyButton: LiquidGlassView = {
-        MessageActionView.makeActionButton(text: "Copy", color: nil, image: UIImage(systemName: "square.fill.on.square.fill", tintColor: .white)!)
-    }()
+    let copyButton = MessageActionView.makeActionButton(text: "Copy", color: nil, image: UIImage(systemName: "square.fill.on.square.fill", tintColor: .white)!)
     
-    let deleteButton: LiquidGlassView = {
-        MessageActionView.makeActionButton(text: "Delete", color: UIColor(red: 232/255, green: 35/255, blue: 35/255, alpha: 0.4), image: UIImage(systemName: "trash.fill", tintColor: .white)!)
-    }()
-    
+    let deleteButton = MessageActionView.makeActionButton(text: "Delete", color: UIColor(red: 232/255, green: 35/255, blue: 35/255, alpha: 0.4), image: UIImage(systemName: "trash.fill", tintColor: .white)!)
+
     
     let stackView: UIStackView = {
         let stack = UIStackView()
@@ -47,10 +39,13 @@ class MessageActionView: UIView {
     }()
     
     
-    var glassView: LiquidGlassView = {
-        let glass = LiquidGlassView(blurRadius: 0, cornerRadius: 22, disableBlur: true, filterExclusions: ThemeEngine.glassFilterExclusions)
+    var glassView: UIView = {
+        let glass = UIView()
         glass.translatesAutoresizingMaskIntoConstraints = false
-        glass.tintColorForGlass = .discordGray.withAlphaComponent(0.5)
+        glass.backgroundColor = .discordGray.withAlphaComponent(0.5)
+        glass.layer.cornerRadius = 22
+        glass.layer.borderWidth = 1
+        glass.layer.borderColor = .darkGray
         return glass
     }()
     var slClient: SLClient?
@@ -82,13 +77,16 @@ class MessageActionView: UIView {
         setupConstraints()
     }
     
-    static func makeActionButton(text: String, color: UIColor?, image: UIImage) -> LiquidGlassView {
-        let glass = LiquidGlassView(blurRadius: 0, cornerRadius: 22, disableBlur: true, filterExclusions: ThemeEngine.glassFilterExclusions)
+    static func makeActionButton(text: String, color: UIColor?, image: UIImage) -> UIView {
+        let glass = UIView()
+        glass.layer.cornerRadius = 22
+        glass.layer.borderWidth = 1
+        glass.layer.borderColor = .darkGray
         glass.translatesAutoresizingMaskIntoConstraints = false
         if let color = color {
-            glass.tintColorForGlass = color
+            glass.backgroundColor = color
         } else {
-            glass.tintColorForGlass = .discordGray.withAlphaComponent(0.5)
+            glass.backgroundColor = .discordGray.withAlphaComponent(0.5)
         }
         let button = LargeHitAreaButton(hitAreaInset: .init(top: -6, left: -30, bottom: -6, right: -30))
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -194,7 +192,7 @@ class MessageActionView: UIView {
         glassView.pinToCenter(of: self)
         glassView.pinToEdges(of: self)
         
-        let buttonViews = stackView.arrangedSubviews.compactMap({ $0 as? LiquidGlassView })
+        let buttonViews = stackView.arrangedSubviews.compactMap({ $0 as? UIView })
         for buttonView in buttonViews {
             buttonView.widthAnchor.constraint(equalTo: stackView.widthAnchor).isActive = true
         }

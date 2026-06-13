@@ -6,59 +6,48 @@ import SFSymbolsCompatKit
 
 
 public class InputView: UIView, UITextViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    public let backgroundView: UIView? = {
-        if ThemeEngine.enableGlass {
-            let bView = LiquidGlassView(blurRadius: 6, cornerRadius: 20, disableBlur: PerformanceManager.disableBlur, filterExclusions: ThemeEngine.glassFilterExclusions)
-            bView.translatesAutoresizingMaskIntoConstraints = false
-            bView.solidViewColour = .discordGray.withAlphaComponent(0.8)
-            bView.tintColorForGlass = .discordGray.withAlphaComponent(0.5)
-            return bView
-        } else {
-            let bView = UIView()
-            bView.translatesAutoresizingMaskIntoConstraints = false
-            bView.layer.cornerRadius = 20
-            bView.backgroundColor = .discordGray.withAlphaComponent(0.8)
-            return bView
-        }
+    public let textInputBackgroundView: UIView = {
+        let bView = UIView()
+        bView.translatesAutoresizingMaskIntoConstraints = false
+        bView.layer.cornerRadius = 20
+        bView.layer.borderColor = .darkGray
+        bView.layer.borderWidth = 1
+        bView.backgroundColor = .discordGray.withAlphaComponent(0.8)
+        return bView
+    }()
+    
+    public let fullBackgroundView: UIView = {
+        let bView = UIView()
+        bView.translatesAutoresizingMaskIntoConstraints = false
+        bView.layer.borderColor = .darkGray
+        bView.layer.borderWidth = 1
+        bView.backgroundColor = .discordGray
+        return bView
     }()
     
     public var channel: TextChannel?
     public var tokenInputView: Bool?
     
-    let buttonBackground: UIView? = {
-        if ThemeEngine.enableGlass {
-            let background = LiquidGlassView(blurRadius: 6, cornerRadius: 20, disableBlur: PerformanceManager.disableBlur, filterExclusions: ThemeEngine.glassFilterExclusions)
-            background.translatesAutoresizingMaskIntoConstraints = false
-            background.isUserInteractionEnabled = false
-            background.solidViewColour = .discordGray.withAlphaComponent(0.8)
-            background.tintColorForGlass = .discordGray.withAlphaComponent(0.5)
-            return background
-        } else {
-            let background = UIView()
-            background.translatesAutoresizingMaskIntoConstraints = false
-            background.layer.cornerRadius = 20
-            background.backgroundColor = .discordGray.withAlphaComponent(0.8)
-            background.isUserInteractionEnabled = false
-            return background
-        }
+    let sendButtonBackgroundView: UIView = {
+        let background = UIView()
+        background.translatesAutoresizingMaskIntoConstraints = false
+        background.layer.cornerRadius = 20
+        background.backgroundColor = .discordGray.withAlphaComponent(0.8)
+        background.layer.borderColor = .darkGray
+        background.layer.borderWidth = 1
+        background.isUserInteractionEnabled = false
+        return background
     }()
     
-    let buttonBackground2: UIView? = {
-        if ThemeEngine.enableGlass {
-            let background = LiquidGlassView(blurRadius: 6, cornerRadius: 20, disableBlur: PerformanceManager.disableBlur, filterExclusions: ThemeEngine.glassFilterExclusions)
-            background.translatesAutoresizingMaskIntoConstraints = false
-            background.isUserInteractionEnabled = false
-            background.solidViewColour = .discordGray.withAlphaComponent(0.8)
-            background.tintColorForGlass = .discordGray.withAlphaComponent(0.5)
-            return background
-        } else {
-            let background = UIView()
-            background.translatesAutoresizingMaskIntoConstraints = false
-            background.layer.cornerRadius = 20
-            background.backgroundColor = .discordGray.withAlphaComponent(0.8)
-            background.isUserInteractionEnabled = false
-            return background
-        }
+    let addImageButtonBackgroundView: UIView = {
+        let background = UIView()
+        background.translatesAutoresizingMaskIntoConstraints = false
+        background.layer.cornerRadius = 20
+        background.layer.borderColor = .darkGray
+        background.layer.borderWidth = 1
+        background.backgroundColor = .discordGray.withAlphaComponent(0.8)
+        background.isUserInteractionEnabled = false
+        return background
     }()
     
     var replyMessage: Message?
@@ -129,16 +118,16 @@ public class InputView: UIView, UITextViewDelegate, UIImagePickerControllerDeleg
     }
     
     private func setupSubviews() {
-        guard let buttonBackground = buttonBackground, let backgroundView = backgroundView, let buttonBackground2 = buttonBackground2 else { return }
-        addSubview(backgroundView)
+        addSubview(fullBackgroundView)
+        addSubview(textInputBackgroundView)
         
         textView.delegate = self
-        backgroundView.addSubview(textView)
+        textInputBackgroundView.addSubview(textView)
                 
-        addSubview(buttonBackground)
-        addSubview(buttonBackground2)
+        addSubview(sendButtonBackgroundView)
+        addSubview(addImageButtonBackgroundView)
         
-        sendButton.sendSubviewToBack(buttonBackground)
+        sendButton.sendSubviewToBack(sendButtonBackgroundView)
         
         
         //Must use weak self or else the whole inputview gets retained 
@@ -156,8 +145,6 @@ public class InputView: UIView, UITextViewDelegate, UIImagePickerControllerDeleg
     }
     
     private func setupConstraints() {
-        guard let backgroundView = backgroundView else { return }
-        
         sendButton.centerYAnchor.constraint(equalTo: textView.centerYAnchor).isActive = true
         sendButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -6).isActive = true
         sendButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
@@ -171,32 +158,30 @@ public class InputView: UIView, UITextViewDelegate, UIImagePickerControllerDeleg
         
         // Background view below bubbleStack, minimum height to prevent collapse
         NSLayoutConstraint.activate([
-            backgroundView.topAnchor.constraint(equalTo: self.topAnchor),
-            backgroundView.leadingAnchor.constraint(equalTo: attachmentButton.trailingAnchor, constant: 6),
-            backgroundView.trailingAnchor.constraint(equalTo: sendButton.leadingAnchor, constant: -6),
-            backgroundView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            textInputBackgroundView.topAnchor.constraint(equalTo: self.topAnchor),
+            textInputBackgroundView.leadingAnchor.constraint(equalTo: attachmentButton.trailingAnchor, constant: 6),
+            textInputBackgroundView.trailingAnchor.constraint(equalTo: sendButton.leadingAnchor, constant: -6),
+            textInputBackgroundView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
             //THIS IS NEEDED OR ELSE IT COLLAPSES ON iOS 6
-            backgroundView.heightAnchor.constraint(greaterThanOrEqualToConstant: 40)
+            textInputBackgroundView.heightAnchor.constraint(greaterThanOrEqualToConstant: 40)
         ])
         
-        textView.pinToEdges(of: backgroundView)
+        textView.pinToEdges(of: textInputBackgroundView)
     }
 
     
     func activateButtonBackgroundConstraints() {
-        guard let buttonBackground = buttonBackground, let buttonBackground2 = buttonBackground2 else { return }
-        buttonBackground.pinToCenter(of: sendButton)
-        buttonBackground.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        buttonBackground.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        sendButtonBackgroundView.pinToCenter(of: sendButton)
+        sendButtonBackgroundView.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        sendButtonBackgroundView.widthAnchor.constraint(equalToConstant: 40).isActive = true
         
-        buttonBackground2.pinToCenter(of: attachmentButton)
-        buttonBackground2.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        buttonBackground2.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        addImageButtonBackgroundView.pinToCenter(of: attachmentButton)
+        addImageButtonBackgroundView.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        addImageButtonBackgroundView.widthAnchor.constraint(equalToConstant: 40).isActive = true
     }
     
     func deactivateButtonBackgroundConstraings() {
-        guard let buttonBackground = buttonBackground else { return }
-        buttonBackground.constraints.forEach { $0.isActive = false }
+        sendButtonBackgroundView.constraints.forEach { $0.isActive = false }
     }
     
     

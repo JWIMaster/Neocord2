@@ -33,22 +33,13 @@ class ReactionButtonView: UIButton {
 
     
     let backgroundView: UIView = {
-        if ThemeEngine.enableGlass {
-            let glass = LiquidGlassView(
-                blurRadius: 0,
-                cornerRadius: 14,
-                disableBlur: true,
-                filterExclusions: ThemeEngine.glassFilterExclusions
-            )
-            glass.tintColorForGlass = UIColor.discordGray
-            glass.translatesAutoresizingMaskIntoConstraints = false
-            return glass
-        } else {
-            let bg = UIView()
-            bg.translatesAutoresizingMaskIntoConstraints = false
-            bg.layer.cornerRadius = 14
-            return bg
-        }
+        let bg = UIView()
+        bg.translatesAutoresizingMaskIntoConstraints = false
+        bg.layer.cornerRadius = 14
+        bg.backgroundColor = .discordGray
+        bg.layer.borderColor = .darkGray
+        bg.layer.borderWidth = 1
+        return bg
     }()
 
     init(reaction: Reaction, channelID: Snowflake, messageID: Snowflake) {

@@ -33,26 +33,12 @@ extension MessageView {
         authorAvatar = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
         authorAvatar.translatesAutoresizingMaskIntoConstraints = false
         
-        AvatarCache.shared.avatar(for: author) { [weak self] image, color in
+        AvatarCache.shared.avatar(for: author) { [weak self] image, _ in
             guard let self = self else { return }
-            guard let image = image, let color = color else {
+            guard let image = image else {
                 DispatchQueue.main.async {
                     let resized = UIImage(named: "defaultavatar")!.resizeImage(UIImage(named: "defaultavatar")!, targetSize: CGSize(width: 30, height: 30), cornerRadius: 15)
                     self.authorAvatar.image = resized
-                    //self.authorAvatar.layer.shouldRasterize = true
-                    //self.authorAvatar.layer.rasterizationScale = UIScreen.main.scale
-                    
-                    if ThemeEngine.enableProfileTinting {
-                        if let messageBackground = self.messageBackground as? LiquidGlassView {
-                            messageBackground.tintColorForGlass = .blue.withIncreasedSaturation(factor: 1.4).withAlphaComponent(0.4)
-                            messageBackground.shadowColor = UIColor.blue.withIncreasedSaturation(factor: 1.4).withAlphaComponent(1).cgColor
-                            messageBackground.shadowOpacity = 0.6
-                            messageBackground.setNeedsLayout()
-                        } else {
-                            self.messageBackground.backgroundColor = .blue.withIncreasedSaturation(factor: 1.4)
-                            self.messageBackground.setNeedsLayout()
-                        }
-                    }
                 }
                 return
             }
@@ -63,20 +49,7 @@ extension MessageView {
                 
                 DispatchQueue.main.async {
                     self.authorAvatar.image = resized
-                    //self.authorAvatar.layer.shouldRasterize = true
-                    //self.authorAvatar.layer.rasterizationScale = UIScreen.main.scale
-                    
-                    if ThemeEngine.enableProfileTinting {
-                        if let messageBackground = self.messageBackground as? LiquidGlassView {
-                            messageBackground.tintColorForGlass = color.withIncreasedSaturation(factor: 1.4).withAlphaComponent(0.4)
-                            messageBackground.shadowColor = color.withIncreasedSaturation(factor: 1.4).withAlphaComponent(1).cgColor
-                            messageBackground.shadowOpacity = 0.6
-                            messageBackground.setNeedsLayout()
-                        } else {
-                            self.messageBackground.backgroundColor = color.withIncreasedSaturation(factor: 1.4)
-                            self.messageBackground.setNeedsLayout()
-                        }
-                    }
+                    self.messageBackground.setNeedsLayout()
                 }
             }
         }

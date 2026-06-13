@@ -5,23 +5,13 @@ import UIKitExtensions
 class SettingsView: UIView {
     
     private var backgroundView: UIView = {
-        if ThemeEngine.enableGlass {
-            let glass = LiquidGlassView(
-                blurRadius: 0,
-                cornerRadius: 22,
-                disableBlur: true,
-                filterExclusions: ThemeEngine.glassFilterExclusions
-            )
-            glass.translatesAutoresizingMaskIntoConstraints = false
-            glass.tintColorForGlass = .discordGray.withAlphaComponent(0.5)
-            return glass
-        } else {
-            let bg = UIView()
-            bg.backgroundColor = .discordGray.withIncreasedSaturation(factor: 0.3)
-            bg.layer.cornerRadius = 22
-            bg.translatesAutoresizingMaskIntoConstraints = false
-            return bg
-        }
+        let bg = UIView()
+        bg.backgroundColor = .discordGray
+        bg.layer.cornerRadius = 22
+        bg.layer.borderWidth = 1
+        bg.layer.borderColor = .darkGray
+        bg.translatesAutoresizingMaskIntoConstraints = false
+        return bg
     }()
     
     private var scrollView: UIScrollView = {
@@ -40,17 +30,12 @@ class SettingsView: UIView {
         return stack
     }()
     
-    private var glassButton: UIView!
     private var animationsButton: UIView!
-    private var profileTintingButton: UIView!
     private var logOutButton: UIView!
-    
-    private var filterButtons: [LiquidGlassView.AdvancedFilterOptions: UIView] = [:]
     
     public init() {
         super.init(frame: .zero)
         setup()
-        setupFilterToggles()
     }
     
     required init?(coder: NSCoder) {
@@ -78,23 +63,9 @@ class SettingsView: UIView {
             contentStack.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -40)
         ])
         
-        // Main toggle buttons
-        glassButton = makeToggleButton(title: "Enable Glass", isOn: ThemeEngine.enableGlass) { [weak self] in
-            ThemeEngine.enableGlass.toggle()
-            self?.updateButtonTint(self?.glassButton, isOn: ThemeEngine.enableGlass)
-            if let parentVC = self?.parentViewController as? ViewController {
-                parentVC.refreshView()
-            }
-        }
-        
         animationsButton = makeToggleButton(title: "Enable Animations", isOn: ThemeEngine.enableAnimations) {
             ThemeEngine.enableAnimations.toggle()
             self.updateButtonTint(self.animationsButton, isOn: ThemeEngine.enableAnimations)
-        }
-        
-        profileTintingButton = makeToggleButton(title: "Enable Profile Tinting", isOn: ThemeEngine.enableProfileTinting) {
-            ThemeEngine.enableProfileTinting.toggle()
-            self.updateButtonTint(self.profileTintingButton, isOn: ThemeEngine.enableProfileTinting)
         }
         
         logOutButton = makeToggleButton(title: "Log Out", isOn: false) {
@@ -103,51 +74,18 @@ class SettingsView: UIView {
             UIApplication.shared.currentKeyWindow?.rootViewController = AuthenticationViewController()
         }
         
-        contentStack.addArrangedSubview(glassButton)
         contentStack.addArrangedSubview(animationsButton)
-        contentStack.addArrangedSubview(profileTintingButton)
         contentStack.addArrangedSubview(logOutButton)
-    }
-    
-    // MARK: - Advanced Filters
-    
-    private func setupFilterToggles() {
-        let label = UILabel()
-        label.text = "Glass Options"
-        label.textColor = .white
-        label.backgroundColor = .clear
-        label.font = UIFont.boldSystemFont(ofSize: 18)
-        contentStack.addArrangedSubview(label)
-        
-        for filter in LiquidGlassView.AdvancedFilterOptions.allCases.filter( { $0 != .tint } ) {
-            let isEnabled = !ThemeEngine.glassFilterExclusions.contains(filter)
-            let button = makeToggleButton(title: "\(filter)".capitalized, isOn: isEnabled) { [weak self] in
-                self?.toggleFilter(filter)
-            }
-            contentStack.addArrangedSubview(button)
-            filterButtons[filter] = button
-        }
-    }
-    
-    private func toggleFilter(_ filter: LiquidGlassView.AdvancedFilterOptions) {
-        var exclusions = ThemeEngine.glassFilterExclusions
-        if let index = exclusions.firstIndex(of: filter) {
-            exclusions.remove(at: index)
-        } else {
-            exclusions.append(filter)
-        }
-        ThemeEngine.glassFilterExclusions = exclusions
-        updateButtonTint(filterButtons[filter], isOn: !exclusions.contains(filter))
     }
     
     // MARK: - Utility
     
     private func makeToggleButton(title: String, isOn: Bool, action: @escaping () -> Void) -> UIView {
-        let glass = LiquidGlassView(blurRadius: 8, cornerRadius: 16, disableBlur: true, filterExclusions: ThemeEngine.glassFilterExclusions)
+        let glass = UIView()
         glass.translatesAutoresizingMaskIntoConstraints = false
         glass.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        glass.tintColorForGlass = isOn ? UIColor.green.withAlphaComponent(0.3) : UIColor.red.withAlphaComponent(0.3)
-        glass.shadowOpacity = 0
+        glass.layer.cornerRadius = 16
+        glass.backgroundColor = isOn ? UIColor.green.withAlphaComponent(0.3) : UIColor.red.withAlphaComponent(0.3)
         
         let button = UIButton(type: .custom)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -168,7 +106,7 @@ class SettingsView: UIView {
     }
     
     private func updateButtonTint(_ button: UIView?, isOn: Bool) {
-        guard let glass = button as? LiquidGlassView else { return }
-        glass.tintColorForGlass = isOn ? UIColor.green.withAlphaComponent(0.3) : UIColor.red.withAlphaComponent(0.3)
+        guard let glass = button as? UIView else { return }
+        glass.backgroundColor = isOn ? UIColor.green.withAlphaComponent(0.3) : UIColor.red.withAlphaComponent(0.3)
     }
 }

@@ -5,21 +5,13 @@ import UIKitExtensions
 public class CustomNavigationController: UINavigationController, UIGestureRecognizerDelegate {
 
     private let customNavBar: UIView = {
-        if ThemeEngine.enableGlass {
-            let glassView = LiquidGlassView(blurRadius: 6, cornerRadius: 22, disableBlur: PerformanceManager.disableBlur, filterExclusions: ThemeEngine.glassFilterExclusions)
-            glassView.solidViewColour = .discordGray.withAlphaComponent(0.8)
-            glassView.tintColorForGlass = .discordGray.withAlphaComponent(0.5)
-            glassView.translatesAutoresizingMaskIntoConstraints = false
-            return glassView
-        } else {
-            let navBar = UIView()
-            navBar.layer.cornerRadius = 22
-            navBar.backgroundColor = .discordGray.withAlphaComponent(0.8)
-            navBar.layer.shadowRadius = 12
-            navBar.layer.shadowOpacity = 0.6
-            navBar.translatesAutoresizingMaskIntoConstraints = false
-            return navBar
-        }
+        let navBar = UIView()
+        navBar.layer.cornerRadius = 22
+        navBar.backgroundColor = .discordGray
+        navBar.layer.borderColor = .darkGray
+        navBar.layer.borderWidth = 1
+        navBar.translatesAutoresizingMaskIntoConstraints = false
+        return navBar
     }()
     
     public var navBarFrame: UIView = {
@@ -122,10 +114,7 @@ public class CustomNavigationController: UINavigationController, UIGestureRecogn
     }
     
     public override func viewDidAppear(_ animated: Bool) {
-        
-        if !(self.customNavBar is LiquidGlassView) {
-            customNavBar.layer.shadowPath = UIBezierPath(roundedRect: customNavBar.bounds, cornerRadius: 12).cgPath
-        }
+        customNavBar.layer.shadowPath = UIBezierPath(roundedRect: customNavBar.bounds, cornerRadius: 12).cgPath
     }
     
     private func updateNavBar(for viewController: UIViewController?) {

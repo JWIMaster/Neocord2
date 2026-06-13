@@ -15,16 +15,10 @@ import FoundationCompatKit
 
 public class ReplyMessageView: UIView, UIGestureRecognizerDelegate {
     let messageBackground: UIView = {
-        if ThemeEngine.enableGlass {
-            let glass = LiquidGlassView(blurRadius: 0, cornerRadius: 14, disableBlur: true, filterExclusions: ThemeEngine.glassFilterExclusions)
-            glass.translatesAutoresizingMaskIntoConstraints = false
-            return glass
-        } else {
-            let bg = UIView()
-            bg.translatesAutoresizingMaskIntoConstraints = false
-            bg.layer.cornerRadius = 14
-            return bg
-        }
+        let bg = UIView()
+        bg.translatesAutoresizingMaskIntoConstraints = false
+        bg.layer.cornerRadius = 14
+        return bg
     }()
     
     let replyContent: UIStackView = {
@@ -155,8 +149,8 @@ public class ReplyMessageView: UIView, UIGestureRecognizerDelegate {
         authorAvatar = UIImageView(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
         authorAvatar.translatesAutoresizingMaskIntoConstraints = false
         
-        AvatarCache.shared.avatar(for: author) { [weak self] image, color in
-            guard let self = self, let image = image, let color = color else { return }
+        AvatarCache.shared.avatar(for: author) { [weak self] image, _ in
+            guard let self = self, let image = image else { return }
             
             MessageView.avatarQueue.async {
                 let resized = image.resizeImage(image, targetSize: CGSize(width: 20, height: 20))
@@ -164,24 +158,8 @@ public class ReplyMessageView: UIView, UIGestureRecognizerDelegate {
                 DispatchQueue.main.async {
                     self.authorAvatar.image = resized
                     self.authorAvatar.contentMode = .scaleAspectFit
-                    self.authorAvatar.layer.shadowPath = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: 20, height: 20), cornerRadius: 10).cgPath
-                    self.authorAvatar.layer.shadowRadius = 6
-                    self.authorAvatar.layer.shadowOpacity = 0.5
-                    self.authorAvatar.layer.shadowColor = UIColor.black.cgColor
                     self.authorAvatar.layer.shouldRasterize = true
                     self.authorAvatar.layer.rasterizationScale = UIScreen.main.scale
-                    
-                    if ThemeEngine.enableProfileTinting {
-                        if let messageBackground = self.messageBackground as? LiquidGlassView {
-                            messageBackground.tintColorForGlass = color.withIncreasedSaturation(factor: 1.4).withAlphaComponent(0.4)
-                            messageBackground.shadowColor = color.withIncreasedSaturation(factor: 1.4).withAlphaComponent(1).cgColor
-                            messageBackground.shadowOpacity = 0.6
-                            messageBackground.setNeedsLayout()
-                        } else {
-                            self.messageBackground.backgroundColor = color.withIncreasedSaturation(factor: 1.4)
-                            self.messageBackground.setNeedsLayout()
-                        }
-                    }
                 }
             }
         }

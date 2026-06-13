@@ -24,19 +24,19 @@ public enum PresenceColor {
 
 public extension UIColor {
     class var onlineGreen: UIColor {
-        return UIColor(red: 85.0/255.0, green: 239.0/255.0, blue: 196.0/255.0, alpha: 0.7)
+        return UIColor(red: 85.0/255.0, green: 239.0/255.0, blue: 196.0/255.0, alpha: 1)
     }
     
     class var idleOrange: UIColor {
-        return UIColor(red: 253.0/255.0, green: 203.0/255.0, blue: 110.0/255.0, alpha: 0.7)
+        return UIColor(red: 253.0/255.0, green: 203.0/255.0, blue: 110.0/255.0, alpha: 1)
     }
     
     class var dndRed: UIColor {
-        return UIColor(red: 235.0/255.0, green: 59.0/255.0, blue: 90.0/255.0, alpha: 0.7)
+        return UIColor(red: 235.0/255.0, green: 59.0/255.0, blue: 90.0/255.0, alpha: 1)
     }
     
     class var offlineGray: UIColor {
-        return UIColor(red: 116.0/255.0, green: 125.0/255.0, blue: 140.0/255.0, alpha: 0.7)
+        return UIColor(red: 116.0/255.0, green: 125.0/255.0, blue: 140.0/255.0, alpha: 1)
     }
 }
 
@@ -63,18 +63,10 @@ class DMButtonCell: UICollectionViewCell, UIGestureRecognizerDelegate {
     }()
 
     private var backgroundGlass: UIView = {
-        if ThemeEngine.enableGlass {
-            let lg = LiquidGlassView(blurRadius: 0, cornerRadius: 22, disableBlur: true, filterExclusions: ThemeEngine.glassFilterExclusions)
-            lg.shadowOpacity = 0
-            lg.shadowRadius = 0
-            lg.solidViewColour = .clear
-            lg.translatesAutoresizingMaskIntoConstraints = false
-            return lg
-        } else {
-            let bg = UIView()
-            bg.layer.cornerRadius = 22
-            return bg
-        }
+        let bg = UIView()
+        bg.layer.cornerRadius = 22
+        bg.translatesAutoresizingMaskIntoConstraints = false
+        return bg
     }()
 
     private var stack: UIStackView = {
@@ -87,19 +79,11 @@ class DMButtonCell: UICollectionViewCell, UIGestureRecognizerDelegate {
     }()
 
     private lazy var presenceIndicator: UIView = {
-        if ThemeEngine.enableGlass {
-            let glass = LiquidGlassView(blurRadius: 0, cornerRadius: 6, disableBlur: true, filterExclusions: ThemeEngine.glassFilterExclusions)
-            glass.translatesAutoresizingMaskIntoConstraints = false
-            glass.shadowColor = presenceColor.withAlphaComponent(1).cgColor
-            glass.shadowRadius = 6
-            glass.tintColorForGlass = presenceColor
-            return glass
-        } else {
-            let view = UIView()
-            view.translatesAutoresizingMaskIntoConstraints = false
-            view.backgroundColor = presenceColor
-            return view
-        }
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = presenceColor
+        view.layer.cornerRadius = 6
+        return view
     }()
 
     private var presenceColor: UIColor = .offlineGray
@@ -116,7 +100,7 @@ class DMButtonCell: UICollectionViewCell, UIGestureRecognizerDelegate {
     }
 
     required init?(coder: NSCoder) { fatalError() }
-
+    
     private func setupViews() {
 
         contentView.addSubview(backgroundGlass)
@@ -145,8 +129,35 @@ class DMButtonCell: UICollectionViewCell, UIGestureRecognizerDelegate {
             presenceIndicator.bottomAnchor.constraint(equalTo: dmAuthorAvatar.bottomAnchor),
             presenceIndicator.trailingAnchor.constraint(equalTo: dmAuthorAvatar.trailingAnchor)
         ])
-    }
+        
+        let avatarBounds = CGRect(x: 0, y: 0, width: 40, height: 40)
+        let path = UIBezierPath(rect: avatarBounds)
+        let indicatorBounds = CGRect(x: 0, y: 0, width: 12, height: 12)
+        let cutoutPadding: CGFloat = 3
+        
+        let centrePosition: CGFloat = {
+            let indicatorRadius = indicatorBounds.width / 2
+            let indicatorCentre: CGPoint = CGPoint(x: avatarBounds.width - indicatorRadius, y: avatarBounds.height - indicatorRadius)
+            let cutoutRadius = indicatorRadius + cutoutPadding
+            return indicatorCentre.x - cutoutRadius
+        }()
+        
+        let circleRect = CGRect(x: centrePosition, y: centrePosition, width: 18, height: 18)
 
+        let hole = UIBezierPath(ovalIn: circleRect)
+
+        path.append(hole)
+        path.usesEvenOddFillRule = true
+
+        let mask = CAShapeLayer()
+        mask.frame = avatarBounds
+        mask.path = path.cgPath
+        mask.fillRule = .evenOdd
+
+        dmAuthorAvatar.layer.mask = mask
+    }
+    
+    
     override func prepareForReuse() {
         super.prepareForReuse()
         presenceColor = .offlineGray
@@ -157,12 +168,7 @@ class DMButtonCell: UICollectionViewCell, UIGestureRecognizerDelegate {
     }
 
     private func updatePresenceIndicatorColor() {
-        if let glass = presenceIndicator as? LiquidGlassView {
-            glass.tintColorForGlass = presenceColor
-            glass.shadowColor = presenceColor.cgColor
-        } else {
-            presenceIndicator.backgroundColor = presenceColor
-        }
+        presenceIndicator.backgroundColor = presenceColor
     }
     
     deinit {
@@ -188,16 +194,6 @@ class DMButtonCell: UICollectionViewCell, UIGestureRecognizerDelegate {
             presenceColor = PresenceColor.color(for: presence)
             updatePresenceIndicatorColor()
             
-            /*clientUser.gateway?.addPresenceUpdateObserver { [weak self] presenceDict in
-                guard let self = self, let updatedPresence = presenceDict[currentRecipientID!] else { return }
-                self.presenceColor = PresenceColor.color(for: updatedPresence)
-                DispatchQueue.main.async {
-                    if self.recipientIDs.contains(recipient.id!) {
-                        self.updatePresenceIndicatorColor()
-                    }
-                }
-            }*/
-            
             presenceUpdateObserver = NotificationCenter.default.addObserver(forName: .presenceUpdate, object: nil, queue: .main) { [weak self] notification in
                 guard let self = self else { return }
                 if let presenceDict = notification.object as? [Snowflake: PresenceType], let updatedPresence = presenceDict[currentRecipientID!] {
@@ -219,14 +215,6 @@ class DMButtonCell: UICollectionViewCell, UIGestureRecognizerDelegate {
                 DispatchQueue.main.async {
                     if self.recipientIDs.contains(recipient.id!) {
                         self.dmAuthorAvatar.image = resized
-                        if ThemeEngine.enableProfileTinting {
-                            if let glass = self.backgroundGlass as? LiquidGlassView {
-                                glass.tintColorForGlass = color
-                                //glass.shadowColor = color.cgColor
-                            } else {
-                                self.backgroundGlass.backgroundColor = color
-                            }
-                        }
                     }
                 }
             }
@@ -239,13 +227,6 @@ class DMButtonCell: UICollectionViewCell, UIGestureRecognizerDelegate {
                 let defaultImage = UIImage(named: "defaultavatar")!.resizeImage(targetSize: CGSize(width: 40, height: 40))
                 DispatchQueue.main.async {
                     self.dmAuthorAvatar.image = defaultImage
-                    if ThemeEngine.enableProfileTinting {
-                        if let glass = self.backgroundGlass as? LiquidGlassView {
-                            glass.tintColorForGlass = UIColor.blue.withAlphaComponent(0.5)
-                        } else {
-                            self.backgroundGlass.backgroundColor = UIColor.blue.withAlphaComponent(0.5)
-                        }
-                    }
                 }
             }
             

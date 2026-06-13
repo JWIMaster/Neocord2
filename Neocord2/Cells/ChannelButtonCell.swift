@@ -27,19 +27,10 @@ class ChannelButtonCell: UICollectionViewCell {
     }()
     
     private var backgroundGlass: UIView = {
-        if ThemeEngine.enableGlass {
-            let lg = LiquidGlassView(blurRadius: 0, cornerRadius: 14, disableBlur: true, filterExclusions: ThemeEngine.glassFilterExclusions)
-            lg.shadowOpacity = 0
-            lg.shadowRadius = 0
-            lg.solidViewColour = .clear
-            lg.translatesAutoresizingMaskIntoConstraints = false
-            return lg
-        } else {
-            let bg = UIView()
-            bg.layer.cornerRadius = 22
-            bg.translatesAutoresizingMaskIntoConstraints = false
-            return bg
-        }
+        let bg = UIView()
+        bg.layer.cornerRadius = 22
+        bg.translatesAutoresizingMaskIntoConstraints = false
+        return bg
     }()
     
     private var stack: UIStackView = {
@@ -94,11 +85,7 @@ class ChannelButtonCell: UICollectionViewCell {
 
         channelIcon.image = UIImage(systemName: iconName, tintColor: .white)
 
-        if let glass = backgroundGlass as? LiquidGlassView {
-            glass.tintColorForGlass = .discordGray
-        } else {
-            backgroundGlass.backgroundColor = .discordGray
-        }
+        backgroundGlass.backgroundColor = .discordGray
     }
 
 }

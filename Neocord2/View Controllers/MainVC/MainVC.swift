@@ -83,18 +83,13 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     var sidebarButtons: [SidebarButtonType] = []
     var profileView: ProfileView?
     let activeContentView: UIView = {
-        if ThemeEngine.enableGlass {
-            let glass = LiquidGlassView(blurRadius: 0, cornerRadius: 22, disableBlur: true, filterExclusions: ThemeEngine.glassFilterExclusions)
-            glass.translatesAutoresizingMaskIntoConstraints = false
-            glass.tintColorForGlass = .discordGray.withAlphaComponent(0.5)
-            return glass
-        } else {
-            let bg = UIView()
-            bg.backgroundColor = .discordGray.withIncreasedSaturation(factor: 0.3)
-            bg.layer.cornerRadius = 22
-            bg.translatesAutoresizingMaskIntoConstraints = false
-            return bg
-        }
+        let bg = UIView()
+        bg.backgroundColor = .discordGray
+        bg.layer.cornerRadius = 22
+        bg.translatesAutoresizingMaskIntoConstraints = false
+        bg.layer.borderWidth = 1
+        bg.layer.borderColor = .darkGray
+        return bg
     }()
     
     lazy var dmCollectionView: UICollectionView = {
@@ -151,18 +146,13 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     var sidebarBackgroundView: UIView = {
-        if ThemeEngine.enableGlass {
-            let glass = LiquidGlassView(blurRadius: 0, cornerRadius: 22, disableBlur: true, filterExclusions: ThemeEngine.glassFilterExclusions)
-            glass.translatesAutoresizingMaskIntoConstraints = false
-            glass.tintColorForGlass = .discordGray.withAlphaComponent(0.5)
-            return glass
-        } else {
-            let bg = UIView()
-            bg.translatesAutoresizingMaskIntoConstraints = false
-            bg.layer.cornerRadius = 22
-            bg.backgroundColor = .discordGray.withIncreasedSaturation(factor: 0.3)
-            return bg
-        }
+        let bg = UIView()
+        bg.translatesAutoresizingMaskIntoConstraints = false
+        bg.layer.cornerRadius = 22
+        bg.backgroundColor = .discordGray
+        bg.layer.borderWidth = 1
+        bg.layer.borderColor = .darkGray
+        return bg
     }()
     
     var toolbar: CustomToolbar = {
@@ -318,20 +308,6 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
 
     
     func readyWatcher() {
-        /*clientUser.onReady = {
-            DispatchQueue.main.async {
-                self.hideLoadingView()
-                CATransaction.begin()
-                CATransaction.setDisableActions(true)
-                self.setupOrderedGuilds()
-                self.rebuildSidebarButtons()
-                self.channelsCollectionView.reloadData()
-                self.sidebarCollectionView.reloadData()
-                self.dmCollectionView.reloadData()
-                self.friendsContainerView.reloadFriends()
-                CATransaction.commit()
-            }
-        }*/
         readyProcessedObserver =  NotificationCenter.default.addObserver(forName: .readyProcessed, object: nil, queue: .main) { [weak self] _ in
             guard let self = self else { return }
             DispatchQueue.main.async {

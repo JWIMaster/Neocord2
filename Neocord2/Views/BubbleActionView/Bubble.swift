@@ -17,19 +17,13 @@ enum BubbleType {
 
 class Bubble: UIView {
     public let backgroundView: UIView = {
-        if ThemeEngine.enableGlass {
-            let bView = LiquidGlassView(blurRadius: 6, cornerRadius: 17, disableBlur: PerformanceManager.disableBlur, filterExclusions: ThemeEngine.glassFilterExclusions)
-            bView.translatesAutoresizingMaskIntoConstraints = false
-            bView.solidViewColour = .discordGray.withAlphaComponent(0.8)
-            bView.tintColorForGlass = .discordGray.withAlphaComponent(0.5)
-            return bView
-        } else {
-            let bView = UIView()
-            bView.layer.cornerRadius = 17
-            bView.translatesAutoresizingMaskIntoConstraints = false
-            bView.backgroundColor = .discordGray.withAlphaComponent(0.8)
-            return bView
-        }
+        let bView = UIView()
+        bView.layer.cornerRadius = 17
+        bView.translatesAutoresizingMaskIntoConstraints = false
+        bView.backgroundColor = .discordGray
+        bView.layer.borderColor = .darkGray
+        bView.layer.borderWidth = 1
+        return bView
     }()
     
     public let textLabel: UILabel = {

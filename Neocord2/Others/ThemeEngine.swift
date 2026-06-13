@@ -50,28 +50,6 @@ public final class ThemeEngine {
             UserDefaults.standard.synchronize()
         }
     }
-    
-    public static var glassFilterExclusions: [LiquidGlassView.AdvancedFilterOptions] {
-        get {
-            switch device {
-            case .a4: return []
-            default:
-                guard let stored = UserDefaults.standard.array(forKey: "glassFilterExclusions") as? [String] else {
-                    if #unavailable(iOS 7.0.1) {
-                        return [.innerShadow]
-                    } else {
-                        return []
-                    }
-                }
-                return stored.compactMap { LiquidGlassView.AdvancedFilterOptions(rawValue: $0) }
-            }
-        }
-        set {
-            let strings = newValue.map { $0.rawValue }
-            UserDefaults.standard.set(strings, forKey: "glassFilterExclusions")
-            UserDefaults.standard.synchronize()
-        }
-    }
 
 
     public static var enableAnimations: Bool {
@@ -110,18 +88,5 @@ public final class ThemeEngine {
     
     public enum ThemeOptions: String {
         case glass, fallback, native
-    }
-    
-    public class func makeThemedView(cornerRadius: CGFloat = 22, blurRadius: CGFloat = 0, disableBlur: Bool = true) -> UIView {
-        if Self.enableGlass {
-            let glass = LiquidGlassView(blurRadius: blurRadius, cornerRadius: cornerRadius, disableBlur: disableBlur, filterExclusions: Self.glassFilterExclusions)
-            glass.translatesAutoresizingMaskIntoConstraints = false
-            return glass
-        } else {
-            let background = UIView()
-            background.translatesAutoresizingMaskIntoConstraints = false
-            background.layer.cornerRadius = cornerRadius
-            return background
-        }
     }
 }
