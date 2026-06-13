@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PROJECT_NAME="Neocord"
+PROJECT_NAME="Neocord2"
 OUTPUT_FOLDER="builddir"
 BUILD_DIR="./builddir"
 TOOLCHAIN_ID="org.swift.5101202406041a"

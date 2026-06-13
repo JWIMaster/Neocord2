@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "5F57B8AD2E9EEAC600CA2CE2"
-               BuildableName = "Neocord.app"
-               BlueprintName = "Neocord"
-               ReferencedContainer = "container:Neocord.xcodeproj">
+               BuildableName = "Neocord2.app"
+               BlueprintName = "Neocord2"
+               ReferencedContainer = "container:Neocord2.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -45,9 +45,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "5F57B8AD2E9EEAC600CA2CE2"
-            BuildableName = "Neocord.app"
-            BlueprintName = "Neocord"
-            ReferencedContainer = "container:Neocord.xcodeproj">
+            BuildableName = "Neocord2.app"
+            BlueprintName = "Neocord2"
+            ReferencedContainer = "container:Neocord2.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -62,9 +62,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "5F57B8AD2E9EEAC600CA2CE2"
-            BuildableName = "Neocord.app"
-            BlueprintName = "Neocord"
-            ReferencedContainer = "container:Neocord.xcodeproj">
+            BuildableName = "Neocord2.app"
+            BlueprintName = "Neocord2"
+            ReferencedContainer = "container:Neocord2.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

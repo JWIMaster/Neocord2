@@ -118,7 +118,7 @@
 		5F5094812EA57D92002646A2 /* SharedValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedValues.swift; sourceTree = "<group>"; };
 		5F5094852EA64674002646A2 /* CustomNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationController.swift; sourceTree = "<group>"; };
 		5F54504F2EACB03E0066AEC6 /* AttachmentVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentVC.swift; sourceTree = "<group>"; };
-		5F57B8AE2E9EEAC600CA2CE2 /* Neocord.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Neocord.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5F57B8AE2E9EEAC600CA2CE2 /* Neocord2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Neocord2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F57B8B12E9EEAC600CA2CE2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5F57B8B42E9EEAC600CA2CE2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5F57B8B62E9EEAC600CA2CE2 /* MainVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC.swift; sourceTree = "<group>"; };
@@ -258,7 +258,7 @@
 				5F79871B2EB1E6470058566C /* README.md */,
 				5FE9785D2ED298CC00CDDD16 /* build */,
 				5F57B8C22E9EF1C400CA2CE2 /* Packages */,
-				5F57B8B02E9EEAC600CA2CE2 /* Neocord */,
+				5F57B8B02E9EEAC600CA2CE2 /* Neocord2 */,
 				5F57B8AF2E9EEAC600CA2CE2 /* Products */,
 				5F57B8C42E9EF1CF00CA2CE2 /* Frameworks */,
 			);
@@ -267,12 +267,12 @@
 		5F57B8AF2E9EEAC600CA2CE2 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				5F57B8AE2E9EEAC600CA2CE2 /* Neocord.app */,
+				5F57B8AE2E9EEAC600CA2CE2 /* Neocord2.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		5F57B8B02E9EEAC600CA2CE2 /* Neocord */ = {
+		5F57B8B02E9EEAC600CA2CE2 /* Neocord2 */ = {
 			isa = PBXGroup;
 			children = (
 				5F902D112F06102900BA29EC /* CDNManager.swift */,
@@ -290,7 +290,7 @@
 				5F50947E2EA5789A002646A2 /* View Controllers */,
 				5F9F58E32EB6EA6F00A09760 /* Others */,
 			);
-			path = Neocord;
+			path = Neocord2;
 			sourceTree = "<group>";
 		};
 		5F57B8C22E9EF1C400CA2CE2 /* Packages */ = {
@@ -462,9 +462,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		5F57B8AD2E9EEAC600CA2CE2 /* Neocord */ = {
+		5F57B8AD2E9EEAC600CA2CE2 /* Neocord2 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 5F57B8BC2E9EEAC800CA2CE2 /* Build configuration list for PBXNativeTarget "Neocord" */;
+			buildConfigurationList = 5F57B8BC2E9EEAC800CA2CE2 /* Build configuration list for PBXNativeTarget "Neocord2" */;
 			buildPhases = (
 				5F57B8AA2E9EEAC600CA2CE2 /* Sources */,
 				5F57B8AB2E9EEAC600CA2CE2 /* Frameworks */,
@@ -474,7 +474,7 @@
 			);
 			dependencies = (
 			);
-			name = Neocord;
+			name = Neocord2;
 			packageProductDependencies = (
 				5F57B8C02E9EEAE000CA2CE2 /* ModernSDKKit */,
 				5F57B8C52E9EF1CF00CA2CE2 /* SwiftcordLegacy */,
@@ -486,7 +486,7 @@
 				5F9395092EE3DC9300977D7A /* ETFKit */,
 			);
 			productName = MakingADiscordAPI;
-			productReference = 5F57B8AE2E9EEAC600CA2CE2 /* Neocord.app */;
+			productReference = 5F57B8AE2E9EEAC600CA2CE2 /* Neocord2.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -504,7 +504,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 5F57B8A92E9EEAC600CA2CE2 /* Build configuration list for PBXProject "Neocord" */;
+			buildConfigurationList = 5F57B8A92E9EEAC600CA2CE2 /* Build configuration list for PBXProject "Neocord2" */;
 			compatibilityVersion = "Xcode 13.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -526,7 +526,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				5F57B8AD2E9EEAC600CA2CE2 /* Neocord */,
+				5F57B8AD2E9EEAC600CA2CE2 /* Neocord2 */,
 			);
 		};
 /* End PBXProject section */
@@ -762,12 +762,12 @@
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = Neocord/Neocord.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Neocord2/Neocord.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = GA4W4X6894;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Neocord/Info.plist;
+				INFOPLIST_FILE = Neocord2/Info.plist;
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Saving images to photo library";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Viewing, saving and sending images";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -776,7 +776,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -803,12 +803,12 @@
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = Neocord/Neocord.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Neocord2/Neocord.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = GA4W4X6894;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Neocord/Info.plist;
+				INFOPLIST_FILE = Neocord2/Info.plist;
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Saving images to photo library";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Viewing, saving and sending images";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -817,7 +817,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -904,12 +904,12 @@
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = Neocord/Neocord.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Neocord2/Neocord.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = GA4W4X6894;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Neocord/Info.plist;
+				INFOPLIST_FILE = Neocord2/Info.plist;
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Saving images to photo library";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Viewing, saving and sending images";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -918,7 +918,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -999,12 +999,12 @@
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = Neocord/Neocord.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Neocord2/Neocord.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = GA4W4X6894;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Neocord/Info.plist;
+				INFOPLIST_FILE = Neocord2/Info.plist;
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Saving images to photo library";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Viewing, saving and sending images";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -1013,7 +1013,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1037,7 +1037,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		5F57B8A92E9EEAC600CA2CE2 /* Build configuration list for PBXProject "Neocord" */ = {
+		5F57B8A92E9EEAC600CA2CE2 /* Build configuration list for PBXProject "Neocord2" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5F57B8BA2E9EEAC800CA2CE2 /* Debug */,
@@ -1048,7 +1048,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		5F57B8BC2E9EEAC800CA2CE2 /* Build configuration list for PBXNativeTarget "Neocord" */ = {
+		5F57B8BC2E9EEAC800CA2CE2 /* Build configuration list for PBXNativeTarget "Neocord2" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5F57B8BD2E9EEAC800CA2CE2 /* Debug */,
